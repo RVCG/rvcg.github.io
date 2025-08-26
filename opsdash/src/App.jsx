@@ -38,6 +38,15 @@ function App() {
     return () => clearInterval(timer);
   }, []);
 
+  // Complete app refresh every 30 minutes
+  useEffect(() => {
+    const refreshTimer = setInterval(() => {
+      window.location.reload();
+    }, 30 * 60 * 1000); // 30 minutes in milliseconds
+
+    return () => clearInterval(refreshTimer);
+  }, []);
+
   // Screen rotation effect - 40s grid, 15s camera, 15s radar
   useEffect(() => {
     const rotationTimer = setInterval(() => {

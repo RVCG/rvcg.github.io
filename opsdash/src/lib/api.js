@@ -1,3 +1,6 @@
+import { TidalCalculator } from "./TidalCalculator.js";
+import raglanTideJson from "./raglan_tide_cons.json";
+
 const RAGLAN_COORDINATES = {
   latitude: -37.8,
   longitude: 174.87,
@@ -41,9 +44,9 @@ export const WeatherAPI = {
     };
   },
 
-  getTrend(currentValue, nextHourValue) {
-    if (!currentValue || !nextHourValue) return "stable";
-    const difference = nextHourValue - currentValue;
+  getTrend(currentValue, nextValue) {
+    if (!currentValue || !nextValue) return "stable";
+    const difference = nextValue - currentValue;
     if (Math.abs(difference) < 0.1) return "stable";
     return difference > 0 ? "increasing" : "decreasing";
   },
@@ -115,79 +118,33 @@ export const WaveAPI = {
 };
 
 export const TideAPI = {
-  calculateTide(tidalConstituents, dateTime) {
-    const now = new Date(dateTime);
-    const tideLevel = this.harmonicAnalysis(tidalConstituents, now);
-    return tideLevel;
-  },
+  tidalCalculator: null,
 
-  harmonicAnalysis(constituents, dateTime) {
-    const J2000 = new Date("2000-01-01T12:00:00Z");
-    const hoursSinceJ2000 = (dateTime - J2000) / (1000 * 60 * 60);
-
-    let tideLevel = 0;
-
-    Object.entries(constituents).forEach(([name, [amplitude, phase]]) => {
-      const frequency = this.getConstituentFrequency(name);
-      const argument = frequency * hoursSinceJ2000 + phase;
-      tideLevel += amplitude * Math.cos(argument);
-    });
-
-    return tideLevel + 1.962; // Add datum offset for Raglan
-  },
-
-  getConstituentFrequency(name) {
-    const frequencies = {
-      M2: 0.0805114007, // Principal lunar semi-diurnal
-      S2: 0.0833333333, // Principal solar semi-diurnal
-      N2: 0.0789992488, // Lunar elliptic semi-diurnal
-      K1: 0.0417807462, // Lunar diurnal
-      O1: 0.0387306544, // Lunar diurnal
-      P1: 0.0415525855, // Solar diurnal
-      Q1: 0.0372185025, // Larger lunar elliptic diurnal
-      K2: 0.0835613891, // Lunisolar semi-diurnal
-      L2: 0.0819899919, // Smaller lunar elliptic semi-diurnal
-      T2: 0.0832664019, // Larger lunar elliptic semi-diurnal
-      M3: 0.1207671011, // Lunar terdiurnal
-      M4: 0.1610228014, // Shallow water overtide of M2
-      M6: 0.2415342021, // Shallow water overtide of M2
-      MU2: 0.0776737251, // Variational
-      NU2: 0.0802851726, // Lunar elliptic semi-diurnal second-order
-      "2N2": 0.0774914713, // Lunar elliptic semi-diurnal
-      H1: 0.0416807447, // Solar diurnal
-      H2: 0.0833073199, // Solar semi-diurnal second harmonic
-      MN4: 0.1595106502, // Shallow water quarter diurnal
-      MS4: 0.163844734, // Shallow water quarter diurnal
-      SK3: 0.1250640925, // Shallow water terdiurnal
-      "2MS6": 0.2444114673, // Shallow water sixth-diurnal
-      EPS2: 0.0761570533, // Lunar elliptic semi-diurnal second-order
-      LDA2: 0.0843479847, // Lunisolar semi-diurnal
-    };
-
-    return frequencies[name] || 0;
+  initializeTidalCalculator(tidalConstituentsData) {
+    if (!this.tidalCalculator && tidalConstituentsData) {
+      const constituents = tidalConstituentsData.cons[0];
+      const datumOffset = tidalConstituentsData.datum_offset[0] || 1.962; // Raglan datum offset
+      this.tidalCalculator = new TidalCalculator(constituents, datumOffset);
+    }
+    return this.tidalCalculator;
   },
 
   async getTideData(tidalConstituentsData) {
+    const calculator = this.initializeTidalCalculator(tidalConstituentsData);
+
+    if (!calculator) {
+      throw new Error("Unable to initialize tidal calculator");
+    }
+
     const now = new Date();
-    const nextHour = new Date(now.getTime() + 60 * 60 * 1000);
-
-    const constituents = tidalConstituentsData.cons[0];
-
-    const currentTide = this.calculateTide(constituents, now);
-    const nextTide = this.calculateTide(constituents, nextHour);
+    const tideInfo = calculator.getCurrentTideInfo(now);
 
     return {
-      current: currentTide,
-      next: nextTide,
-      trend: this.getTrend(currentTide, nextTide),
-      timestamp: now.toISOString(),
+      current: tideInfo.current,
+      trend: tideInfo.trend,
+      nextExtreme: tideInfo.nextExtreme,
+      timestamp: tideInfo.timestamp,
     };
-  },
-
-  getTrend(current, next) {
-    const difference = next - current;
-    if (Math.abs(difference) < 0.05) return "stable";
-    return difference > 0 ? "rising" : "falling";
   },
 
   getTideColorCode(tideLevel) {
@@ -218,7 +175,7 @@ export const DataAPI = {
         },
         waves: {
           ...waveData,
-          trend: "stable", // Would need historical data for proper trend
+          trend: "stable",
         },
         tides: tideData,
         lastUpdated: new Date().toISOString(),
