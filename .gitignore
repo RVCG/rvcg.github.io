@@ -5,3 +5,9 @@ Thumbs.db
 # IDE files
 .idea
 .vscode/
+
+#Claude
+CLAUDE.md
+
+#Python files
+tide_code
