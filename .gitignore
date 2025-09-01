@@ -11,3 +11,13 @@ CLAUDE.md
 
 #Python files
 tide_code
+
+#Vite
+opsdash/node_modules
+opsdash/.vite
+opsdash/dist
+
+#Node modules
+node_modules
+
+
