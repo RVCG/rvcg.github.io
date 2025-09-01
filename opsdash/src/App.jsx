@@ -208,8 +208,7 @@ function App() {
               </div>
               {displayData.tides.nextStage && (
                 <div className="secondary-value">
-                  {displayData.tides.nextStage}{" "}
-                  {displayData.tides.nextStageTime}
+                  {`${displayData.tides.nextStage} ${displayData.tides.nextStageHeight} @${displayData.tides.nextStageTime}`}
                 </div>
               )}
               <div
@@ -272,11 +271,16 @@ function App() {
                 {displayData.temperature.value}
               </div>
               {displayData.temperature.windChill && (
-                <div
-                  className="secondary-value"
-                  style={{ color: displayData.temperature.chillColor }}
-                >
-                  Wind chill {displayData.temperature.windChill}
+                <div className="secondary-value">
+                  <span style={{ fontSize: "2rem" }}>Feels like </span>
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      color: displayData.temperature.chillColor,
+                    }}
+                  >
+                    {displayData.temperature.windChill}
+                  </span>
                 </div>
               )}
               <div

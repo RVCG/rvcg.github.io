@@ -182,7 +182,7 @@
 }
 
 .primary-value {
-  font-size: 7rem;
+  font-size: 8rem;
   font-weight: bold;
   margin-bottom: 0.3rem;
 }
@@ -305,10 +305,17 @@ html {
   font-size: 14px; /* Base size */
 }
 
-/* Large screens (default) */
-@media (min-width: 1700px) {
+/* Extra large screens */
+@media (min-width: 2500px) {
   html {
-    font-size: 18px;
+    font-size: 36px;
+  }
+}
+
+/* Large screens (default) */
+@media (min-width: 1900px) {
+  html {
+    font-size: 20px;
   }
 }
 
