@@ -75,24 +75,27 @@
 
 .grid-quadrant {
   background-color: var(--bg-secondary);
+  border: 1px solid var(--accent-blue);
+  /* border-radius: 12px;
   padding: 10px;
+  margin: 5px; */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.grid-quadrant.ne {
-  border-right: 2px solid var(--bg-primary);
-  border-bottom: 2px solid var(--bg-primary);
+/* .grid-quadrant.ne {
+  border-right: 2px solid var(--accent-blue);
+  border-bottom: 2px solid var(--accent-blue);
 }
 
 .grid-quadrant.se {
-  border-bottom: 2px solid var(--bg-primary);
+  border-bottom: 2px solid var(--accent-blue);
 }
 
 .grid-quadrant.sw {
-  border-right: 2px solid var(--bg-primary);
-}
+  border-right: 2px solid var(--accent-blue);
+} */
 
 /* Camera View Styles */
 .iframe-view {
@@ -133,7 +136,7 @@
 .weather-item {
   text-align: center;
   border: 2px solid var(--accent-blue);
-  border-radius: 12px;
+  /* border-radius: 12px; */
   background-color: rgba(30, 144, 255, 0.05);
 }
 
@@ -235,15 +238,12 @@
 .vertical-grid {
   width: 300px;
   background-color: var(--bg-secondary);
-  border-left: 2px solid var(--accent-blue);
-  padding: 20px;
 }
 
 /* Weather Grid for Vertical Sidebar */
 .weather-grid {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   height: 100%;
 }
 
@@ -252,8 +252,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--accent-blue);
-  border-radius: 8px;
+  border: 1px solid var(--accent-blue);
+  padding: 5px;
   background-color: rgba(30, 144, 255, 0.05);
 }
 
