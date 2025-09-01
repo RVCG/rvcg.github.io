@@ -42,10 +42,20 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
+      - name: Create deployment structure
+        run: |
+          mkdir -p deploy
+          cp -r opsdash/dist/* deploy/opsdash/
+          cp index.html deploy/
+          cp -r local-areas deploy/
+          cp *.css deploy/ || true
+          cp -r public deploy/ || true
+          ls -la deploy/
+          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: opsdash/dist
+          path: deploy
 
   deploy:
     environment:

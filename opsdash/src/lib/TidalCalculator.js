@@ -17,7 +17,7 @@ export class TidalCalculator {
 
     try {
       const fileName = `Raglan ${targetYear}.csv`;
-      const csvPath = `/opsdash/${encodeURIComponent(fileName)}`;
+      const csvPath = `${encodeURIComponent(fileName)}`;
       const response = await fetch(csvPath);
       if (!response.ok) {
         throw new Error(`Failed to load tidal data for ${targetYear}`);
