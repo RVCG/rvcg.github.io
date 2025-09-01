@@ -44,13 +44,14 @@ jobs:
         
       - name: Create deployment structure
         run: |
-          mkdir -p deploy
+          mkdir -p deploy/opsdash
           cp -r opsdash/dist/* deploy/opsdash/
           cp index.html deploy/
           cp -r local-areas deploy/
           cp *.css deploy/ || true
           cp -r public deploy/ || true
           ls -la deploy/
+          ls -la deploy/opsdash/
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
