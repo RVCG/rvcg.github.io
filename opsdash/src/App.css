@@ -75,7 +75,7 @@
 
 .grid-quadrant {
   background-color: var(--bg-secondary);
-  padding: 20px;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,13 +184,11 @@
 .primary-value {
   font-size: 8rem;
   font-weight: bold;
-  margin-bottom: 0.3rem;
 }
 
 .secondary-value {
   font-size: 4rem;
   font-weight: bold;
-  margin-bottom: 0.3rem;
 }
 
 .trend-arrow {
