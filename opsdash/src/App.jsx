@@ -7,27 +7,18 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from "@phosphor-icons/react";
-import {
-  useWeatherData,
-  useWeatherDisplay,
-  getTrendColor,
-} from "./hooks/useWeatherData";
-import { raglanTideData } from "./data/raglanTideData";
+import { useWeatherData, useWeatherDisplay } from "./hooks/useWeatherData";
 import "./App.css";
 
-const LOOP = 20000;
-const IFRAME = 5000;
+const LOOP = 30000;
+const IFRAME = 10000;
 
 function App() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [currentView, setCurrentView] = useState("grid"); // 'grid', 'camera', or 'radar'
 
   // Fetch weather data using React Query
-  const {
-    data: weatherData,
-    isLoading,
-    isError,
-  } = useWeatherData(raglanTideData);
+  const { data: weatherData, isLoading, isError } = useWeatherData();
   const displayData = useWeatherDisplay(weatherData);
 
   useEffect(() => {
@@ -46,6 +37,15 @@ function App() {
 
     return () => clearInterval(refreshTimer);
   }, []);
+
+  // Manual view switching function
+  const switchToNextView = () => {
+    setCurrentView((prev) => {
+      if (prev === "grid") return "camera";
+      if (prev === "camera") return "windy";
+      return "grid";
+    });
+  };
 
   // Screen rotation effect - 40s grid, 15s camera, 15s radar
   useEffect(() => {
@@ -66,6 +66,28 @@ function App() {
     }, LOOP); // Total cycle: 70 seconds
 
     return () => clearInterval(rotationTimer);
+  }, []);
+
+  // Manual view switching on key press or mouse click
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      switchToNextView();
+    };
+
+    const handleClick = (event) => {
+      // Prevent switching if clicking on iframe content
+      if (event.target.tagName !== "IFRAME") {
+        switchToNextView();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+      document.removeEventListener("click", handleClick);
+    };
   }, []);
 
   return (
@@ -127,21 +149,30 @@ function App() {
             <div className="widget">
               <div className="widget-title">
                 <Waves size={48} className="widget-icon" />
-                Waves (m)
+                <div>
+                  Waves (m)
+                  <div className="widget-subtitle">
+                    {displayData.waves.source}
+                  </div>
+                </div>
               </div>
-              <div className="data-source">Jackson's reef</div>
               <div
-                className="large-value"
+                className="primary-value"
                 style={{ color: displayData.waves.color }}
               >
                 {displayData.waves.value}
               </div>
+              {displayData.waves.direction && (
+                <div className="secondary-value">
+                  {displayData.waves.direction} {displayData.waves.period}s
+                </div>
+              )}
               <div
                 className="trend"
-                style={{ color: getTrendColor(displayData.waves.trend) }}
+                style={{ color: displayData.waves.trendColor }}
               >
                 {getTrendIcon(displayData.waves.trend)}{" "}
-                {getTrendText(displayData.waves.trend)}
+                {displayData.waves.trend}
               </div>
             </div>
           </div>
@@ -150,21 +181,29 @@ function App() {
             <div className="widget">
               <div className="widget-title">
                 <ArrowLineUp size={48} className="widget-icon" />
-                Tide (m)
+                <div>
+                  Tide (m)
+                  <div className="widget-subtitle">Raglan Wharf</div>
+                </div>
               </div>
-              <div className="data-source">Predicted</div>
               <div
-                className="large-value"
+                className="primary-value"
                 style={{ color: displayData.tides.color }}
               >
                 {displayData.tides.value}
               </div>
+              {displayData.tides.nextStage && (
+                <div className="secondary-value">
+                  {displayData.tides.nextStage}{" "}
+                  {displayData.tides.nextStageTime}
+                </div>
+              )}
               <div
                 className="trend"
-                style={{ color: getTrendColor(displayData.tides.trend) }}
+                style={{ color: displayData.tides.trendColor }}
               >
                 {getTrendIcon(displayData.tides.trend)}{" "}
-                {getTrendText(displayData.tides.trend)}
+                {displayData.tides.trend}
               </div>
             </div>
           </div>
@@ -173,21 +212,32 @@ function App() {
             <div className="widget">
               <div className="widget-title">
                 <Wind size={48} className="widget-icon" />
-                Wind (kts)
+                <div>
+                  Wind (kts)
+                  <div className="widget-subtitle">
+                    {displayData.wind.source}
+                  </div>
+                </div>
               </div>
-              <div className="data-source">Jackson's Reef</div>
               <div
-                className="large-value"
+                className="primary-value"
                 style={{ color: displayData.wind.color }}
               >
                 {displayData.wind.value}
               </div>
+              {displayData.wind.direction && (
+                <div
+                  className="secondary-value"
+                  style={{ color: displayData.wind.chillColor }}
+                >
+                  {displayData.wind.direction}
+                </div>
+              )}
               <div
                 className="trend"
-                style={{ color: getTrendColor(displayData.wind.trend) }}
+                style={{ color: displayData.wind.trendColor }}
               >
-                {getTrendIcon(displayData.wind.trend)}{" "}
-                {getTrendText(displayData.wind.trend)}
+                {getTrendIcon(displayData.wind.trend)} {displayData.wind.trend}
               </div>
             </div>
           </div>
@@ -196,21 +246,31 @@ function App() {
             <div className="widget">
               <div className="widget-title">
                 <Thermometer size={48} className="widget-icon" />
-                Temperature (°C)
+                <div>
+                  Temperature (°C)
+                  <div className="widget-subtitle">Forecast on Bar</div>
+                </div>
               </div>
-              <div className="data-source">ECMWF forecast </div>
               <div
-                className="large-value"
+                className="primary-value"
                 style={{ color: displayData.temperature.color }}
               >
                 {displayData.temperature.value}
               </div>
+              {displayData.temperature.windChill && (
+                <div
+                  className="secondary-value"
+                  style={{ color: displayData.temperature.chillColor }}
+                >
+                  Wind chill {displayData.temperature.windChill}
+                </div>
+              )}
               <div
                 className="trend"
-                style={{ color: getTrendColor(displayData.temperature.trend) }}
+                style={{ color: displayData.temperature.trendColor }}
               >
                 {getTrendIcon(displayData.temperature.trend)}{" "}
-                {getTrendText(displayData.temperature.trend)}
+                {displayData.temperature.trend}
               </div>
             </div>
           </div>
@@ -238,9 +298,9 @@ function WeatherGrid({ displayData }) {
           </div>
           <div
             className="mini-trend"
-            style={{ color: getTrendColor(displayData.waves.trend) }}
+            style={{ color: displayData.waves.trendColor }}
           >
-            {getTrendIcon(displayData.waves.trend, 20)}
+            {getTrendIcon(displayData.waves.trend, 30)}
           </div>
         </div>
       </div>
@@ -259,9 +319,9 @@ function WeatherGrid({ displayData }) {
           </div>
           <div
             className="mini-trend"
-            style={{ color: getTrendColor(displayData.tides.trend) }}
+            style={{ color: displayData.tides.trendColor }}
           >
-            {getTrendIcon(displayData.tides.trend, 20)}
+            {getTrendIcon(displayData.tides.trend, 30)}
           </div>
         </div>
       </div>
@@ -277,9 +337,9 @@ function WeatherGrid({ displayData }) {
           </div>
           <div
             className="mini-trend"
-            style={{ color: getTrendColor(displayData.wind.trend) }}
+            style={{ color: displayData.wind.trendColor }}
           >
-            {getTrendIcon(displayData.wind.trend, 20)}
+            {getTrendIcon(displayData.wind.trend, 30)}
           </div>
         </div>
       </div>
@@ -295,12 +355,18 @@ function WeatherGrid({ displayData }) {
             style={{ color: displayData.temperature.color }}
           >
             {displayData.temperature.value}°C
+            {displayData.temperature.windChill !==
+              displayData.temperature.value && (
+              <div style={{ fontSize: "0.7em", opacity: 0.8 }}>
+                ({displayData.temperature.windChill}°C)
+              </div>
+            )}
           </div>
           <div
             className="mini-trend"
-            style={{ color: getTrendColor(displayData.temperature.trend) }}
+            style={{ color: displayData.temperature.trendColor }}
           >
-            {getTrendIcon(displayData.temperature.trend, 20)}
+            {getTrendIcon(displayData.temperature.trend, 30)}
           </div>
         </div>
       </div>
@@ -309,31 +375,16 @@ function WeatherGrid({ displayData }) {
 }
 
 // Utility functions for trend icons and text
-function getTrendIcon(trend, size = 32) {
+function getTrendIcon(trend, size = 40) {
   switch (trend) {
     case "increasing":
     case "rising":
-      return <ArrowUpRight size={size} />;
+      return <ArrowUpRight size={size} weight="bold" />;
     case "decreasing":
     case "falling":
-      return <ArrowDownRight size={size} />;
+      return <ArrowDownRight size={size} weight="bold" />;
     default:
       return null;
-  }
-}
-
-function getTrendText(trend) {
-  switch (trend) {
-    case "increasing":
-      return "Increasing";
-    case "decreasing":
-      return "Decreasing";
-    case "rising":
-      return "Rising";
-    case "falling":
-      return "Falling";
-    default:
-      return "Stable";
   }
 }
 
