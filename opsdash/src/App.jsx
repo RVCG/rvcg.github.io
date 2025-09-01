@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Waves,
   Thermometer,
@@ -16,6 +16,7 @@ const IFRAME = 10000;
 function App() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [currentView, setCurrentView] = useState("grid"); // 'grid', 'camera', or 'radar'
+  const iframeRef = useRef(null);
 
   // Fetch weather data using React Query
   const { data: weatherData, isLoading, isError } = useWeatherData();
@@ -90,6 +91,18 @@ function App() {
     };
   }, []);
 
+  // Focus iframe when camera view becomes active for better autoplay support
+  useEffect(() => {
+    if (currentView === "camera" && iframeRef.current) {
+      // Small delay to ensure iframe is rendered
+      setTimeout(() => {
+        iframeRef.current?.focus();
+        // Simulate user interaction to help with autoplay
+        iframeRef.current?.click?.();
+      }, 100);
+    }
+  }, [currentView]);
+
   return (
     <div className="app">
       <div className="time-bar">
@@ -116,10 +129,11 @@ function App() {
         <div className="iframe-view">
           <div className="iframe-container">
             <iframe
-              src="https://www.youtube.com/embed/eOnZBBVqwb0?autoplay=1"
+              ref={iframeRef}
+              src="https://www.youtube.com/embed/eOnZBBVqwb0?autoplay=1&mute=1&loop=1&controls=1&rel=0"
               title="Raglan Bar Camera"
               frameBorder="0"
-              allow="autoplay; web-share"
+              allow="autoplay; encrypted-media; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
             />
