@@ -166,7 +166,8 @@ function App() {
                 <div>
                   Waves (m)
                   <div className="widget-subtitle">
-                    {displayData.waves.source}
+                    {displayData.waves.source}{" "}
+                    {localTimestamp(displayData.waves.timestamp)}
                   </div>
                 </div>
               </div>
@@ -197,7 +198,9 @@ function App() {
                 <ArrowLineUp size={48} className="widget-icon" />
                 <div>
                   Tide (m)
-                  <div className="widget-subtitle">Raglan Wharf</div>
+                  <div className="widget-subtitle">
+                    Raglan Wharf {localTimestamp(displayData.tides.timestamp)}
+                  </div>
                 </div>
               </div>
               <div
@@ -228,7 +231,8 @@ function App() {
                 <div>
                   Wind (kts)
                   <div className="widget-subtitle">
-                    {displayData.wind.source}
+                    {displayData.wind.source}{" "}
+                    {localTimestamp(displayData.wind.timestamp)}
                   </div>
                 </div>
               </div>
@@ -261,7 +265,10 @@ function App() {
                 <Thermometer size={48} className="widget-icon" />
                 <div>
                   Temperature (°C)
-                  <div className="widget-subtitle">Forecast on Bar</div>
+                  <div className="widget-subtitle">
+                    Forecast on Bar{" "}
+                    {localTimestamp(displayData.temperature.timestamp)}
+                  </div>
                 </div>
               </div>
               <div
@@ -404,6 +411,15 @@ function getTrendIcon(trend, size = 40) {
     default:
       return null;
   }
+}
+
+function localTimestamp(timestamp) {
+  return new Date(timestamp).toLocaleString("en-NZ", {
+    timeZone: "Pacific/Auckland",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
 }
 
 export default App;

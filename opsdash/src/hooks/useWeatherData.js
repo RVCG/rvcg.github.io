@@ -14,24 +14,36 @@ export function useWeatherData() {
 export function useWeatherDisplay(weatherData) {
   if (!weatherData) {
     return {
-      wind: { value: "--", color: "#888", trend: "stable" },
-      temperature: { value: "--", color: "#888", trend: "stable" },
-      waves: { value: "--", color: "#888", trend: "stable" },
-      tides: { value: "--", color: "#888", trend: "stable" },
+      wind: { value: "--", color: "#888", trend: "stable", timestamp: "--" },
+      temperature: {
+        value: "--",
+        color: "#888",
+        trend: "stable",
+        timestamp: "--",
+      },
+      waves: { value: "--", color: "#888", trend: "stable", timestamp: "--" },
+      tides: { value: "--", color: "#888", trend: "stable", timestamp: "--" },
     };
   }
 
   const { forecast, waves, tides } = weatherData;
 
-  const windChill = forecast?.temperature?.temperature && (waves?.windSpeed || forecast?.wind?.speed) 
-    ? calculateWindChill(forecast.temperature.temperature, waves.windSpeed || forecast.wind.speed)
-    : undefined;
+  const windChill =
+    forecast?.temperature?.temperature &&
+    (waves?.windSpeed || forecast?.wind?.speed)
+      ? calculateWindChill(
+          forecast.temperature.temperature,
+          waves.windSpeed || forecast.wind.speed
+        )
+      : undefined;
 
   return {
     wind: {
       value: waves?.windSpeed
         ? Math.round(waves.windSpeed)
-        : forecast?.wind?.speed ? Math.round(forecast.wind.speed) : "--",
+        : forecast?.wind?.speed
+        ? Math.round(forecast.wind.speed)
+        : "--",
       color: getWindColor(waves?.windSpeed || forecast?.wind?.speed || 0),
       trend: forecast?.wind?.trend || "stable",
       trendColor:
@@ -40,8 +52,13 @@ export function useWeatherDisplay(weatherData) {
           : forecast?.wind?.trend === "increasing"
           ? "#ff4444"
           : "#44ff44",
-      direction: forecast?.wind?.direction ? getDirection(forecast.wind.direction) : "--",
+      direction: forecast?.wind?.direction
+        ? getDirection(forecast.wind.direction)
+        : "--",
       source: waves?.windSpeed ? "Jackson's Reef" : "Forecast on Bar",
+      timestamp: waves?.windSpeed
+        ? waves.windTimestamp
+        : forecast?.wind?.timestamp,
     },
     temperature: {
       value: forecast?.temperature?.temperature
@@ -49,7 +66,9 @@ export function useWeatherDisplay(weatherData) {
         : "--",
       windChill: windChill ? Math.round(windChill) : undefined,
       chillColor: windChill ? getTemperatureColor(windChill) : "#888",
-      color: forecast?.temperature?.temperature ? getTemperatureColor(forecast.temperature.temperature) : "#888",
+      color: forecast?.temperature?.temperature
+        ? getTemperatureColor(forecast.temperature.temperature)
+        : "#888",
       trend: forecast?.temperature?.trend || "stable",
       trendColor:
         forecast?.temperature?.trend === "stable"
@@ -57,11 +76,14 @@ export function useWeatherDisplay(weatherData) {
           : forecast?.temperature?.trend === "decreasing"
           ? "#ff4444"
           : "#44ff44",
+      timestamp: forecast?.temperature?.timestamp,
     },
     waves: {
       value: waves?.waveHeight
         ? waves.waveHeight.toFixed(1)
-        : forecast?.wave?.waveHeight ? forecast.wave.waveHeight.toFixed(1) : "--",
+        : forecast?.wave?.waveHeight
+        ? forecast.wave.waveHeight.toFixed(1)
+        : "--",
       color: getWaveColor(waves?.waveHeight || forecast?.wave?.waveHeight || 0),
       trend: forecast?.wave?.trend || "stable",
       trendColor:
@@ -72,24 +94,44 @@ export function useWeatherDisplay(weatherData) {
           : "#44ff44",
       period: waves?.wavePeriod
         ? Math.round(waves.wavePeriod)
-        : forecast?.wave?.wavePeriod ? Math.round(forecast.wave.wavePeriod) : "--",
+        : forecast?.wave?.wavePeriod
+        ? Math.round(forecast.wave.wavePeriod)
+        : "--",
       direction: waves?.waveDirection
         ? getDirection(waves.waveDirection)
-        : forecast?.wave?.waveDirection ? getDirection(forecast.wave.waveDirection) : "--",
+        : forecast?.wave?.waveDirection
+        ? getDirection(forecast.wave.waveDirection)
+        : "--",
       source: waves?.waveHeight ? "Jackson's Reef" : "Forecast on Bar",
+      timestamp: waves?.waveHeight
+        ? waves.waveTimestamp
+        : forecast?.wave?.timestamp,
     },
     tides: {
       value: tides?.current ? tides.current.toFixed(1) : "--",
       color: tides?.current ? getTideColor(tides.current) : "#888",
-      nextStage: tides?.nextStage === "high" ? "HW" : tides?.nextStage === "low" ? "LW" : "--",
-      nextStageTime: tides?.nextStageTime ? new Date(tides.nextStageTime).toLocaleTimeString("en-NZ", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      }) : "--",
+      nextStage:
+        tides?.nextStage === "high"
+          ? "HW"
+          : tides?.nextStage === "low"
+          ? "LW"
+          : "--",
+      nextStageTime: tides?.nextStageTime
+        ? new Date(tides.nextStageTime).toLocaleTimeString("en-NZ", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })
+        : "--",
       nextStageHeight: tides?.nextStageHeight || "--",
       trend: tides?.trend || "stable",
-      trendColor: tides?.trend === "falling" ? "#ff4444" : tides?.trend === "rising" ? "#44ff44" : "#888",
+      trendColor:
+        tides?.trend === "falling"
+          ? "#ff4444"
+          : tides?.trend === "rising"
+          ? "#44ff44"
+          : "#888",
+      timestamp: tides?.timestamp,
     },
   };
 }
