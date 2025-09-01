@@ -16,20 +16,15 @@ export class TidalCalculator {
     const targetYear = year || this.currentYear;
 
     try {
-      console.log(`Loading tidal data for ${targetYear}...`);
       const fileName = `Raglan ${targetYear}.csv`;
       const csvPath = `/opsdash/${encodeURIComponent(fileName)}`;
-      console.log(`Fetching from: ${csvPath}`);
       const response = await fetch(csvPath);
-      console.log(`Response status: ${response.status}`);
       if (!response.ok) {
         throw new Error(`Failed to load tidal data for ${targetYear}`);
       }
 
       const csvText = await response.text();
-      console.log(`CSV text length: ${csvText.length}`);
       this.tidalData = this.parseCSV(csvText);
-      console.log(`Parsed ${this.tidalData.length} tidal events`);
       this.currentYear = targetYear;
     } catch (error) {
       console.error("Error loading tidal data:", error);

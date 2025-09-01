@@ -35,6 +35,9 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: ./opsdash
+        env:
+          VITE_SOFAR_TOKEN: ${{ secrets.VITE_SOFAR_TOKEN }}
+          VITE_SOFAR_SPOTTER_ID: ${{ secrets.VITE_SOFAR_SPOTTER_ID }}
         
       - name: Setup Pages
         uses: actions/configure-pages@v4

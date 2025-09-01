@@ -6,11 +6,6 @@ const RAGLAN_COORDINATES = {
 };
 
 const SOFAR_SPOTTER_ID = import.meta.env.VITE_SOFAR_SPOTTER_ID || "SPOT-30182R";
-console.log("SOFAR_SPOTTER_ID:", SOFAR_SPOTTER_ID);
-console.log(
-  "VITE_SOFAR_TOKEN:",
-  import.meta.env.VITE_SOFAR_TOKEN ? "***SET***" : "NOT SET"
-);
 
 const ECMWF_WIND_10M =
   "https://gateway.datamesh.oceanum.io/oceanql/4bfc5eb6f374be45d1e4bfd0c09c8fe38780a49db8fd56eddc4c5043$?auth=rvcg&sig=162c7606a29817817e9ae1d992aaae5d3aa7a68864b45dcea62c3362&f=json";
@@ -190,7 +185,15 @@ export const WaveAPI = {
       };
     } catch (error) {
       console.error("SOFAR Wave API error:", error);
-      throw error;
+      // Return fallback values instead of throwing to prevent complete app failure
+      return {
+        waveHeight: undefined,
+        wavePeriod: undefined,
+        waveDirection: undefined,
+        windSpeed: undefined,
+        windDirection: undefined,
+        timestamp: new Date().toISOString(),
+      };
     }
   },
 };
@@ -213,12 +216,7 @@ export const TideAPI = {
   },
 
   async getTideData() {
-    console.log("Getting tide data...");
     const calculator = await this.initializeCalculator();
-    console.log(
-      "Calculator initialized, tidalData length:",
-      calculator.tidalData?.length
-    );
     const now = new Date();
     const tideInfo = calculator.getCurrentTideInfo(now);
 
@@ -246,7 +244,7 @@ export const DataAPI = {
         waveForecast,
         waveData,
         tideData,
-      ] = await Promise.all([
+      ] = await Promise.allSettled([
         OceanumAPI.getWindForecast(),
         OceanumAPI.getTemperatureForecast(),
         OceanumAPI.getWaveForecast(),
@@ -256,12 +254,12 @@ export const DataAPI = {
 
       return {
         forecast: {
-          wind: windForecast,
-          temperature: temperatureForecast,
-          wave: waveForecast,
+          wind: windForecast.status === 'fulfilled' ? windForecast.value : undefined,
+          temperature: temperatureForecast.status === 'fulfilled' ? temperatureForecast.value : undefined,
+          wave: waveForecast.status === 'fulfilled' ? waveForecast.value : undefined,
         },
-        waves: waveData,
-        tides: tideData,
+        waves: waveData.status === 'fulfilled' ? waveData.value : undefined,
+        tides: tideData.status === 'fulfilled' ? tideData.value : undefined,
         lastUpdated: new Date().toISOString(),
       };
     } catch (error) {
