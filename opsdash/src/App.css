@@ -132,6 +132,10 @@
 
 .weather-item {
   text-align: center;
+  border: 2px solid var(--accent-blue);
+  border-radius: 12px;
+  padding: 20px;
+  background-color: rgba(30, 144, 255, 0.05);
 }
 
 .weather-label {
@@ -249,6 +253,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 2px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 15px;
+  background-color: rgba(30, 144, 255, 0.05);
 }
 
 .mini-widget {
