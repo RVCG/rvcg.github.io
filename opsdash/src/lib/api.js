@@ -159,7 +159,7 @@ export const WaveAPI = {
         wavePeriod: data.data.waves[waveIndex]?.meanPeriod,
         waveDirection: data.data.waves[waveIndex]?.meanDirection,
         waveTimestamp,
-        windSpeed: data.data.wind[windIndex]?.speed,
+        windSpeed: 1.943 * data.data.wind[windIndex]?.speed,
         windDirection: data.data.wind[windIndex]?.direction,
         windTimestamp,
       };
