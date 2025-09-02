@@ -154,6 +154,9 @@ export const WaveAPI = {
       const waveTimestamp = data.data.waves[waveIndex]?.timestamp;
       const windIndex = data.data.wind.length - 1;
       const windTimestamp = data.data.wind[windIndex]?.timestamp;
+      if (new Date() - new Date(waveTimestamp) > 3 * 3600 * 1000) {
+        throw new Error("Wave data is older than 3 hours");
+      }
       return {
         waveHeight: data.data.waves[waveIndex]?.significantWaveHeight,
         wavePeriod: data.data.waves[waveIndex]?.meanPeriod,
