@@ -39,11 +39,12 @@ export function useWeatherDisplay(weatherData) {
 
   return {
     wind: {
-      value: waves?.windSpeed
-        ? Math.round(waves.windSpeed)
-        : forecast?.wind?.speed
-        ? Math.round(forecast.wind.speed)
-        : "--",
+      value:
+        waves?.windSpeed && false
+          ? Math.round(waves.windSpeed)
+          : forecast?.wind?.speed
+          ? Math.round(forecast.wind.speed)
+          : "--",
       color: getWindColor(waves?.windSpeed || forecast?.wind?.speed || 0),
       trend: forecast?.wind?.trend || "stable",
       trendColor:
