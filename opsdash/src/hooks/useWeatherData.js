@@ -46,7 +46,9 @@ export function useWeatherDisplay(weatherData) {
         : forecast?.wind?.speed
         ? Math.round(forecast.wind.speed)
         : "--",
-      color: getWindColor(waves?.windSpeed || forecast?.wind?.speed || 0),
+      color: getWindColor(
+        wavebuoyWind ? waves?.windSpeed : forecast?.wind?.speed || 0
+      ),
       trend: forecast?.wind?.trend || "stable",
       trendColor:
         forecast?.wind?.trend === "stable"
@@ -145,7 +147,7 @@ function getDirection(direction) {
 }
 
 function getWindColor(windSpeed) {
-  if (windSpeed > 20) return "#ff4444";
+  if (1.94 * windSpeed >= 20) return "#ff4444";
   if (windSpeed >= 12) return "#ffaa00";
   return "#44ff44";
 }
