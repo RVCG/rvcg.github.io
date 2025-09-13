@@ -10,7 +10,7 @@ const SOFAR_SPOTTER_ID = import.meta.env.VITE_SOFAR_SPOTTER_ID || "SPOT-30182R";
 const ECMWF_WIND_10M =
   "https://gateway.datamesh.oceanum.io/oceanql/9bfcb138fdcf3a29c5e13a4ce481c6e1c4bfb6b355f099757bb311ae$?auth=rvcg&sig=26c9737bba00513b92cf6e7dde5d02cc5b962f37f5b95f3cf1f09693&f=json";
 const ECMWF_T2M =
-  "https://gateway.datamesh.oceanum.io/oceanql/20e376047e479bfa1e7df9161a9a8468ce67f73a5ca086d96119763a$?auth=rvcg&sig=cdb290164c153d11335c3d842a9ff0355366f8fa4c12b085d423bf1d&f=json";
+  "https://gateway.datamesh.oceanum.io/oceanql/e1d7a9e93c0c1f3e40000449fbe8de21608914d98183f4dbe7ad8728$?auth=rvcg&sig=48590012f26f3e917d30a7345f4a9fce5d9b21467cbb3f099101bffc&f=json";
 const ECMWF_PRECIP =
   "https://gateway.datamesh.oceanum.io/oceanql/56ad85c97bb03cf7db524c9cb70d8328bc78ddfc2f52f0ad0a8c8468$?auth=rvcg&sig=dab9bda91f5106ba6ee6056f14b346564d2c8174078f01b7665fd71d&f=json";
 const OCEANUM_WAVE =
