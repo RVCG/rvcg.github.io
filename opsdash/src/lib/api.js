@@ -12,7 +12,7 @@ const ECMWF_WIND_10M =
 const ECMWF_T2M =
   "https://gateway.datamesh.oceanum.io/oceanql/e1d7a9e93c0c1f3e40000449fbe8de21608914d98183f4dbe7ad8728$?auth=rvcg&sig=48590012f26f3e917d30a7345f4a9fce5d9b21467cbb3f099101bffc&f=json";
 const OCEANUM_WAVE =
-  "https://gateway.datamesh.oceanum.io/oceanql/fde43083639e31b40e4a04aff21274ff4b8a980e30bb2f125d07b061$?auth=rvcg&sig=83df4bcd8176600674ca58b3d1a5805ea32e9e63024c7b2b473f501e&f=json";
+  "https://gateway.datamesh.oceanum.io/oceanql/5e7ca23581739ecf1b4e879839c771e11410fb9d815655f9968d2c75$?auth=rvcg&sig=40ecf0ee67b0a3d97b3053cd58db4d36cc1d065665e997cf5dc5c2f8&f=json";
 
 const FORECAST_SOURCES = {
   wind: ECMWF_WIND_10M,
