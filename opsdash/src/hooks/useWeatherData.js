@@ -37,14 +37,15 @@ export function useWeatherDisplay(weatherData) {
         )
       : undefined;
 
+  const wavebuoyWind = waves?.windSpeed && false;
+
   return {
     wind: {
-      value:
-        waves?.windSpeed && false
-          ? Math.round(waves.windSpeed)
-          : forecast?.wind?.speed
-          ? Math.round(forecast.wind.speed)
-          : "--",
+      value: wavebuoyWind
+        ? Math.round(waves.windSpeed)
+        : forecast?.wind?.speed
+        ? Math.round(forecast.wind.speed)
+        : "--",
       color: getWindColor(waves?.windSpeed || forecast?.wind?.speed || 0),
       trend: forecast?.wind?.trend || "stable",
       trendColor:
@@ -56,10 +57,8 @@ export function useWeatherDisplay(weatherData) {
       direction: forecast?.wind?.direction
         ? getDirection(forecast.wind.direction)
         : "--",
-      source: waves?.windSpeed && false ? "Jackson's Reef" : "Forecast on Bar",
-      timestamp: waves?.windSpeed
-        ? waves.windTimestamp
-        : forecast?.wind?.timestamp,
+      source: wavebuoyWind ? "Jackson's Reef" : "Forecast on Bar",
+      timestamp: wavebuoyWind ? waves.windTimestamp : forecast?.wind?.timestamp,
     },
     temperature: {
       value: forecast?.temperature?.temperature
