@@ -56,7 +56,7 @@ export function useWeatherDisplay(weatherData) {
       direction: forecast?.wind?.direction
         ? getDirection(forecast.wind.direction)
         : "--",
-      source: waves?.windSpeed ? "Jackson's Reef" : "Forecast on Bar",
+      source: waves?.windSpeed && false ? "Jackson's Reef" : "Forecast on Bar",
       timestamp: waves?.windSpeed
         ? waves.windTimestamp
         : forecast?.wind?.timestamp,
