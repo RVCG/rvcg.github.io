@@ -128,7 +128,7 @@ export const OceanumAPI = {
       trend: getTrend(
         waveHeight[index],
         waveHeight[index + 1] || waveHeight[index],
-        0.1
+        0.2
       ),
     };
   },
@@ -210,10 +210,6 @@ export const TideAPI = {
       nextStageHeight: tideInfo.nextStageHeight,
       timestamp: now.toISOString(),
     };
-  },
-
-  getTideColorCode(tideLevel) {
-    return tideLevel > 1.9 ? "#44ff44" : "#ff4444"; // green if high, red if low
   },
 };
 
