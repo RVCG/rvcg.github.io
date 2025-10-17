@@ -12,7 +12,7 @@ const ECMWF_WIND_10M =
 const ECMWF_T2M =
   "https://gateway.datamesh.oceanum.io/oceanql/e1d7a9e93c0c1f3e40000449fbe8de21608914d98183f4dbe7ad8728$?auth=rvcg&sig=48590012f26f3e917d30a7345f4a9fce5d9b21467cbb3f099101bffc&f=json";
 const OCEANUM_WAVE =
-  "https://gateway.datamesh.oceanum.io/oceanql/5e7ca23581739ecf1b4e879839c771e11410fb9d815655f9968d2c75$?auth=rvcg&sig=40ecf0ee67b0a3d97b3053cd58db4d36cc1d065665e997cf5dc5c2f8&f=json";
+  "https://gateway.datamesh.oceanum.io/oceanql/328f9259c78f2668f9582ebb94d783585c8f54aace752d4e488fb2b4$?auth=rvcg&sig=b1564659d67a209ff1ed94a67f44abf5c74bd8a0baebd8c138280009&f=json";
 
 const FORECAST_SOURCES = {
   wind: ECMWF_WIND_10M,
@@ -116,9 +116,11 @@ export const OceanumAPI = {
     const utcTimes = data.coords.time.data;
     const index = closest_time_index(utcTimes);
 
-    const waveHeight = utcTimes.map((time, i) => data.data_vars.hs.data[i]);
-    const wavePeriod = utcTimes.map((time, i) => 1 / data.data_vars.fp.data[i]);
-    const waveDirection = utcTimes.map((time, i) => data.data_vars.dp.data[i]);
+    const waveHeight = utcTimes.map((time, i) => data.data_vars.hs.data[i][0]);
+    const wavePeriod = utcTimes.map((time, i) => data.data_vars.tps.data[i][0]);
+    const waveDirection = utcTimes.map(
+      (time, i) => data.data_vars.dpm.data[i][0]
+    );
 
     return {
       waveHeight: waveHeight[index],
@@ -127,8 +129,8 @@ export const OceanumAPI = {
       timestamp: utcTimes[index],
       trend: getTrend(
         waveHeight[index],
-        waveHeight[index + 1] || waveHeight[index],
-        0.2
+        waveHeight[index + 3] || waveHeight[index],
+        0.1
       ),
     };
   },
@@ -153,7 +155,16 @@ export const WaveAPI = {
       const windIndex = data.data.wind.length - 1;
       const windTimestamp = data.data.wind[windIndex]?.timestamp;
       if (new Date() - new Date(waveTimestamp) > 3 * 3600 * 1000) {
-        throw new Error("Wave data is older than 3 hours");
+        console.warn("Wave data is older than 3 hours");
+        return {
+          waveHeight: undefined,
+          wavePeriod: undefined,
+          waveDirection: undefined,
+          waveTimestamp: undefined,
+          windSpeed: undefined,
+          windDirection: undefined,
+          windTimestamp: undefined,
+        };
       }
       return {
         waveHeight: data.data.waves[waveIndex]?.significantWaveHeight,
