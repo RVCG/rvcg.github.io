@@ -10,7 +10,7 @@ const SOFAR_SPOTTER_ID = import.meta.env.VITE_SOFAR_SPOTTER_ID || "SPOT-30182R";
 const ECMWF_WIND_10M =
   "https://gateway.datamesh.oceanum.io/oceanql/4bfc5eb6f374be45d1e4bfd0c09c8fe38780a49db8fd56eddc4c5043$?auth=rvcg&sig=162c7606a29817817e9ae1d992aaae5d3aa7a68864b45dcea62c3362&f=json";
 const ECMWF_T2M =
-  "https://gateway.datamesh.oceanum.io/oceanql/e1d7a9e93c0c1f3e40000449fbe8de21608914d98183f4dbe7ad8728$?auth=rvcg&sig=48590012f26f3e917d30a7345f4a9fce5d9b21467cbb3f099101bffc&f=json";
+  "https://gateway.datamesh.oceanum.io/oceanql/aa596d2493bda85c8c4960299e8188c25b33e639b576b914bc28c171$?auth=rvcg&sig=9f6541f01676a5d0b02f3beabdf8d038145e0d43544d1199293ebd9f&f=json";
 const OCEANUM_WAVE =
   "https://gateway.datamesh.oceanum.io/oceanql/328f9259c78f2668f9582ebb94d783585c8f54aace752d4e488fb2b4$?auth=rvcg&sig=b1564659d67a209ff1ed94a67f44abf5c74bd8a0baebd8c138280009&f=json";
 
@@ -96,7 +96,7 @@ export const OceanumAPI = {
     const index = closest_time_index(utcTimes);
 
     const temperature = utcTimes.map(
-      (time, i) => data.data_vars.t2m.data[i] - 273.15
+      (time, i) => data.data_vars.tmp2m.data[i] - 273.15
     );
 
     return {

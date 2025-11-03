@@ -264,7 +264,7 @@ function App() {
               <div className="widget-title">
                 <Thermometer size={48} className="widget-icon" />
                 <div>
-                  Temperature (°C)
+                  Air temp. (°C)
                   <div className="widget-subtitle">
                     Forecast on Bar{" "}
                     {localTimestamp(displayData.temperature.timestamp)}
@@ -373,7 +373,7 @@ function WeatherGrid({ displayData }) {
         <div className="mini-widget">
           <div className="mini-title">
             <Thermometer size={32} className="mini-icon" />
-            Temp
+            Air Temp
           </div>
           <div
             className="mini-value"
