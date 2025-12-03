@@ -33,7 +33,7 @@ function App() {
   // Complete app refresh every 30 minutes
   useEffect(() => {
     const refreshTimer = setInterval(() => {
-      window.location.href = window.location.href;
+      //window.location.href = window.location.href;
     }, 30 * 60 * 1000); // 30 minutes in milliseconds
 
     return () => clearInterval(refreshTimer);
