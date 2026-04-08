@@ -7,12 +7,14 @@ const RAGLAN_COORDINATES = {
 
 const SOFAR_SPOTTER_ID = import.meta.env.VITE_SOFAR_SPOTTER_ID || "SPOT-30182R";
 
+const PW_WIND_10M = "";
+
 const ECMWF_WIND_10M =
-  "https://gateway.datamesh.oceanum.io/oceanql/4bfc5eb6f374be45d1e4bfd0c09c8fe38780a49db8fd56eddc4c5043$?auth=rvcg&sig=162c7606a29817817e9ae1d992aaae5d3aa7a68864b45dcea62c3362&f=json";
+  "https://datamesh.oceanum.io/oceanql/9d2f7f72cdc6c9047ac5e56d66c3fed498cd40025148b8a4ce5ba204$?auth=rvcg&sig=a132d85ddb05d4ccc9a4127b457874345deee517b708aab27159bb54&f=json";
 const ECMWF_T2M =
-  "https://gateway.datamesh.oceanum.io/oceanql/aa596d2493bda85c8c4960299e8188c25b33e639b576b914bc28c171$?auth=rvcg&sig=9f6541f01676a5d0b02f3beabdf8d038145e0d43544d1199293ebd9f&f=json";
+  "https://datamesh.oceanum.io/oceanql/f9176d6ec4091a499407340e8fb119f79203add68e122d13501597af$?auth=rvcg&sig=36830a74c1f108f3fa4f8786cef590dfa8c4ab4dd5e0860c2487fb9e&f=json";
 const OCEANUM_WAVE =
-  "https://gateway.datamesh.oceanum.io/oceanql/328f9259c78f2668f9582ebb94d783585c8f54aace752d4e488fb2b4$?auth=rvcg&sig=b1564659d67a209ff1ed94a67f44abf5c74bd8a0baebd8c138280009&f=json";
+  "https://datamesh.oceanum.io/oceanql/c57ad3fd80f22e8084f8bdfba6f95d220ca9c0c8306a19144e0c97db$?auth=rvcg&sig=32545e2ccb94f816e13380d192a16e3b5fd974cb559b755cbb68c5e0&f=json";
 
 const FORECAST_SOURCES = {
   wind: ECMWF_WIND_10M,
