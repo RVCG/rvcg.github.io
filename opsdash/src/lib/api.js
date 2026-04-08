@@ -98,7 +98,7 @@ export const OceanumAPI = {
     const index = closest_time_index(utcTimes);
 
     const temperature = utcTimes.map(
-      (time, i) => data.data_vars.tmp2m.data[i] - 273.15
+      (time, i) => data.data_vars.t2m.data[i] - 273.15
     );
 
     return {
