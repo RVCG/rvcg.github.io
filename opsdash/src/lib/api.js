@@ -7,7 +7,7 @@ const RAGLAN_COORDINATES = {
 
 const SOFAR_SPOTTER_ID = import.meta.env.VITE_SOFAR_SPOTTER_ID || "SPOT-30182R";
 
-const PW_WIND_10M = "";
+const PW_WIND_10M = "https://datamesh.oceanum.io/oceanql/63b01a3abea368a4b8d44c9cbf979faf64333b6e2c2f3c04fd163296$?auth=rvcg&sig=5380057bbdd95951c9a178e4726e408b2c48d6c9cc4461d137d0e0d3&f=json";
 
 const ECMWF_WIND_10M =
   "https://datamesh.oceanum.io/oceanql/91a64129b576804d8a616a65957db4e08d6b30ad20ae5230a9db05b1$?auth=rvcg&sig=10a6bb5517bc3ed59a11a6e16edc49a10bea396574273593b1debca7&f=json";
@@ -17,7 +17,7 @@ const OCEANUM_WAVE =
   "https://datamesh.oceanum.io/oceanql/55584b2cf4d6f9f7f70be2c635a329432a329327ddc9a50bddc6907b$?auth=rvcg&sig=740a53875e70b0d4daa91f0c1e3ae1440876f66bd02da65f2220379e&f=json";
 
 const FORECAST_SOURCES = {
-  wind: ECMWF_WIND_10M,
+  wind: PW_WIND_10M,
   temperature: ECMWF_T2M,
   wave: OCEANUM_WAVE,
 };
