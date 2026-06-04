@@ -147,7 +147,7 @@ function getDirection(direction) {
 }
 
 function getWindColor(windSpeed) {
-  if (windSpeed >= 20) return "#ff4444";
+  if (windSpeed >= 18) return "#ff4444";
   if (windSpeed >= 12) return "#ffaa00";
   return "#44ff44";
 }
