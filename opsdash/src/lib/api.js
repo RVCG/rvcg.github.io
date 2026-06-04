@@ -2,7 +2,7 @@ import { TidalCalculator } from "./TidalCalculator.js";
 
 const RAGLAN_COORDINATES = {
   latitude: -37.8,
-  longitude: 174.87,
+  longitude: 174.8,
 };
 
 const SOFAR_SPOTTER_ID = import.meta.env.VITE_SOFAR_SPOTTER_ID || "SPOT-30182R";
@@ -10,11 +10,11 @@ const SOFAR_SPOTTER_ID = import.meta.env.VITE_SOFAR_SPOTTER_ID || "SPOT-30182R";
 const PW_WIND_10M = "";
 
 const ECMWF_WIND_10M =
-  "https://datamesh.oceanum.io/oceanql/9d2f7f72cdc6c9047ac5e56d66c3fed498cd40025148b8a4ce5ba204$?auth=rvcg&sig=a132d85ddb05d4ccc9a4127b457874345deee517b708aab27159bb54&f=json";
+  "https://datamesh.oceanum.io/oceanql/share/8234f586-cb29-4c65-95c3-67a919f1b0f8?f=json";
 const ECMWF_T2M =
-  "https://datamesh.oceanum.io/oceanql/f9176d6ec4091a499407340e8fb119f79203add68e122d13501597af$?auth=rvcg&sig=36830a74c1f108f3fa4f8786cef590dfa8c4ab4dd5e0860c2487fb9e&f=json";
+  "https://datamesh.oceanum.io/oceanql/share/e4020e02-6f9c-4654-b80e-709ab915ef0d?f=json";
 const OCEANUM_WAVE =
-  "https://datamesh.oceanum.io/oceanql/c57ad3fd80f22e8084f8bdfba6f95d220ca9c0c8306a19144e0c97db$?auth=rvcg&sig=32545e2ccb94f816e13380d192a16e3b5fd974cb559b755cbb68c5e0&f=json";
+  "https://datamesh.oceanum.io/oceanql/share/435d2527-ae52-4920-b440-ff1f61ea74fc?f=json";
 
 const FORECAST_SOURCES = {
   wind: ECMWF_WIND_10M,
@@ -62,8 +62,8 @@ export const OceanumAPI = {
         1.943 *
         Math.sqrt(
           data.data_vars.u10.data[i] * data.data_vars.u10.data[i] +
-            data.data_vars.v10.data[i] * data.data_vars.v10.data[i]
-        )
+            data.data_vars.v10.data[i] * data.data_vars.v10.data[i],
+        ),
     );
     //Get direction as degress from true north
     //atan2 returns -pi to pi, so we need to convert to 0 to 2pi
@@ -73,10 +73,10 @@ export const OceanumAPI = {
           (180 *
             Math.atan2(
               data.data_vars.v10.data[i],
-              data.data_vars.u10.data[i]
+              data.data_vars.u10.data[i],
             )) /
             Math.PI) %
-        360
+        360,
     );
 
     return {
@@ -98,7 +98,7 @@ export const OceanumAPI = {
     const index = closest_time_index(utcTimes);
 
     const temperature = utcTimes.map(
-      (time, i) => data.data_vars.t2m.data[i] - 273.15
+      (time, i) => data.data_vars.t2m.data[i] - 273.15,
     );
 
     return {
@@ -121,7 +121,7 @@ export const OceanumAPI = {
     const waveHeight = utcTimes.map((time, i) => data.data_vars.hs.data[i][0]);
     const wavePeriod = utcTimes.map((time, i) => data.data_vars.tps.data[i][0]);
     const waveDirection = utcTimes.map(
-      (time, i) => data.data_vars.dpm.data[i][0]
+      (time, i) => data.data_vars.dpm.data[i][0],
     );
 
     return {
@@ -132,7 +132,7 @@ export const OceanumAPI = {
       trend: getTrend(
         waveHeight[index],
         waveHeight[index + 3] || waveHeight[index],
-        0.1
+        0.1,
       ),
     };
   },
@@ -147,7 +147,7 @@ export const WaveAPI = {
           headers: {
             token: import.meta.env.VITE_SOFAR_TOKEN,
           },
-        }
+        },
       );
 
       const data = await response.json();
