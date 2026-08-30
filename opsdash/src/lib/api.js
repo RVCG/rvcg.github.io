@@ -11,14 +11,14 @@ const PW_WIND_10M =
   "https://datamesh.oceanum.io/oceanql/share/8234f586-cb29-4c65-95c3-67a919f1b0f8?f=json";
 const ECMWF_WIND_10M =
   "https://datamesh.oceanum.io/oceanql/share/1dde34c4-6b24-43f1-a87c-cc67467bf96b?f=json";
-const ECMWF_T2M =
+const GFS_T2M =
   "https://datamesh.oceanum.io/oceanql/share/5c58b087-c5ee-4284-b5c4-4b8c5df5be59?f=json";
 const OCEANUM_WAVE =
   "https://datamesh.oceanum.io/oceanql/share/435d2527-ae52-4920-b440-ff1f61ea74fc?f=json";
 
 const FORECAST_SOURCES = {
   wind: PW_WIND_10M,
-  temperature: ECMWF_T2M,
+  temperature: GFS_T2M,
   wave: OCEANUM_WAVE,
 };
 
