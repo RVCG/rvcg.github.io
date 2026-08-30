@@ -12,7 +12,7 @@ const PW_WIND_10M =
 const ECMWF_WIND_10M =
   "https://datamesh.oceanum.io/oceanql/share/1dde34c4-6b24-43f1-a87c-cc67467bf96b?f=json";
 const ECMWF_T2M =
-  "https://datamesh.oceanum.io/oceanql/share/e4020e02-6f9c-4654-b80e-709ab915ef0d?f=json";
+  "https://datamesh.oceanum.io/oceanql/share/5c58b087-c5ee-4284-b5c4-4b8c5df5be59?f=json";
 const OCEANUM_WAVE =
   "https://datamesh.oceanum.io/oceanql/share/435d2527-ae52-4920-b440-ff1f61ea74fc?f=json";
 
