@@ -13,12 +13,14 @@ const ECMWF_WIND_10M =
   "https://datamesh.oceanum.io/oceanql/share/1dde34c4-6b24-43f1-a87c-cc67467bf96b?f=json";
 const ECMWF_T2M =
   "https://datamesh.oceanum.io/oceanql/share/8be92218-77d5-4531-95fd-4e64be67879b?f=json";
+const GFS_T2M =
+  "https://datamesh.oceanum.io/oceanql/share/5c58b087-c5ee-4284-b5c4-4b8c5df5be59?f=json";
 const OCEANUM_WAVE =
   "https://datamesh.oceanum.io/oceanql/share/435d2527-ae52-4920-b440-ff1f61ea74fc?f=json";
 
 const FORECAST_SOURCES = {
   wind: PW_WIND_10M,
-  temperature: ECMWF_T2M,
+  temperature: GFS_T2M,
   wave: OCEANUM_WAVE,
 };
 
@@ -98,7 +100,7 @@ export const OceanumAPI = {
     const index = closest_time_index(utcTimes);
 
     const temperature = utcTimes.map(
-      (time, i) => data.data_vars.t2m.data[i] - 273.15,
+      (time, i) => data.data_vars.tmp2m.data[i] - 273.15,
     );
 
     return {
