@@ -20,7 +20,7 @@ const OCEANUM_WAVE =
 
 const FORECAST_SOURCES = {
   wind: PW_WIND_10M,
-  temperature: GFS_T2M,
+  temperature: ECMWF_T2M,
   wave: OCEANUM_WAVE,
 };
 
