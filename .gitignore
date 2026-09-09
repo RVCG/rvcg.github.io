@@ -21,5 +21,6 @@ opsdash/dist
 node_modules
 
 .env.*
+*.pyc
 
 
